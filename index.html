@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon - We Are Crafting Something Amazing</title>
+    <!-- Tailwind CSS Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="h-full bg-slate-950 text-slate-100 font-sans antialiased overflow-x-hidden flex items-center justify-center relative">
+
+    <!-- Background Glow Orbs for Ambient Animation -->
+    <div class="absolute top-1/4 left-1/4 w-72 h-72 bg-indigo-600/30 rounded-full blur-3xl animate-pulse-slow pointer-events-none"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl animate-pulse-slow pointer-events-none delay-1000"></div>
+
+    <!-- Main Content Wrapper -->
+    <main class="relative z-10 max-w-xl w-full mx-4 p-8 md:p-10 bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl shadow-2xl shadow-indigo-950/40 text-center animate-float">
+        
+        <!-- Status Badge -->
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 mb-6 rounded-full bg-indigo-500/10 border border-indigo-500/25 text-indigo-400 text-xs font-medium tracking-wide uppercase">
+            <span class="w-2 h-2 rounded-full bg-indigo-400 animate-ping"></span>
+            Under Maintenance &bull; Coming Soon
+        </div>
+
+        <!-- Headline -->
+        <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-4">
+            We are building <br class="hidden sm:block">
+            <span class="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                something incredible
+            </span>
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="text-slate-400 text-base md:text-lg mb-8 leading-relaxed">
+            Our website is currently undergoing scheduled maintenance. We’ll be back online shortly with a brand new experience. Stay tuned!
+        </p>
+
+        <!-- Newsletter / Notification Form -->
+        <form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto mb-8" onsubmit="event.preventDefault(); alert('Thank you for subscribing!');">
+            <input 
+                type="email" 
+                required 
+                placeholder="Enter your email address" 
+                class="flex-1 px-4 py-3.5 rounded-xl bg-slate-950/80 border border-slate-800 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-sm transition-all"
+            >
+            <button 
+                type="submit" 
+                class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-medium text-sm shadow-lg shadow-indigo-600/25 hover:shadow-indigo-600/40 active:scale-[0.98] transition-all cursor-pointer"
+            >
+                Notify Me
+            </button>
+        </form>
+
+        <!-- Footer / Social Links -->
+        <div class="pt-6 border-t border-slate-800/80 flex items-center justify-center gap-6 text-slate-400 text-sm">
+            <a href="#" class="hover:text-indigo-400 transition-colors">Twitter</a>
+            <span>&bull;</span>
+            <a href="#" class="hover:text-indigo-400 transition-colors">GitHub</a>
+            <span>&bull;</span>
+            <a href="#" class="hover:text-indigo-400 transition-colors">Contact Support</a>
+        </div>
+
+    </main>
+
+</body>
+</html>
