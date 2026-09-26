@@ -33,9 +33,16 @@ main { max-width: 1240px; margin: auto; padding: 0 28px 80px; }
 .product-info p { min-height: 42px; margin: 0 0 18px; color: var(--muted); font-size: 12px; line-height: 1.6; }
 .card-bottom { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
 .price { font-size: 14px; font-weight: 800; }
-.cta { display: inline-flex; align-items: center; justify-content: center; padding: 11px 14px; background: var(--ink); color: #fff; border-radius: 99px; font-size: 11px; font-weight: 700; }
+.cta { display: inline-flex; align-items: center; justify-content: center; padding: 11px 14px; background: var(--ink); color: #fff; border: 0; border-radius: 99px; font-size: 11px; font-weight: 700; cursor: pointer; }
 .cta:hover { background: #34463b; }
 .disclosure { margin: 20px 0 0; color: #7b857e; font-size: 11px; line-height: 1.6; }
+.empty-state { border: 1px dashed #cbd2c8; border-radius: 16px; padding: 48px 24px; text-align: center; background: rgba(255,255,255,.5); }
+.empty-state h3 { margin: 12px 0 8px; font-size: 19px; }
+.empty-state p, .error-page p { color: var(--muted); font-size: 13px; line-height: 1.6; }
+.empty-icon { font-size: 25px; color: #81993a; }
+.error-page { min-height: 56vh; padding-top: 100px; }
+.error-page h1 { font-size: clamp(36px, 6vw, 64px); letter-spacing: -2px; margin: 16px 0; }
+.error-page .cta { margin-top: 14px; }
 .site-footer { max-width: 1240px; margin: auto; padding: 34px 28px 48px; border-top: 1px solid var(--line); }
 .site-footer p { color: var(--muted); font-size: 13px; }
 .site-footer small { color: #7b857e; font-size: 11px; }
