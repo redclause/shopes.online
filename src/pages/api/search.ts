@@ -26,9 +26,7 @@ const normalize = (items: unknown[], source: string): SearchResult[] =>
       return {
         title: String(item.title ?? item.name ?? "Untitled result"),
         url,
-        description: String(
-          item.content ?? item.snippet ?? item.text ?? item.description ?? "",
-        ),
+        description: String(item.content ?? item.snippet ?? item.text ?? item.description ?? ""),
         source,
         domain: (() => {
           try {
@@ -58,6 +56,8 @@ async function tavily(query: string) {
   const key = getSecret("TAVILY_API_KEY");
   if (!key) return [];
 
+  const shopQuery = `Find online shops, ecommerce stores, retailers, and official store websites relevant to: ${query}. Return shopping websites rather than news, articles, blogs, social media, directories, reviews, or informational pages.`;
+
   const response = await withTimeout((signal) =>
     fetch("https://api.tavily.com/search", {
       method: "POST",
@@ -68,10 +68,10 @@ async function tavily(query: string) {
       },
       body: JSON.stringify({
         api_key: key,
-        query,
+        query: shopQuery,
         topic: "general",
-        search_depth: "basic",
-        max_results: 10,
+        search_depth: "advanced",
+        max_results: 15,
         include_answer: false,
         include_raw_content: false,
       }),
@@ -80,67 +80,11 @@ async function tavily(query: string) {
 
   if (!response.ok) {
     const detail = await response.text().catch(() => "");
-    throw new Error(
-      `Tavily ${response.status}${detail ? `: ${detail.slice(0, 160)}` : ""}`,
-    );
+    throw new Error(`Tavily ${response.status}${detail ? `: ${detail.slice(0, 160)}` : ""}`);
   }
 
   const data = (await response.json()) as { results?: unknown[] };
   return normalize(data.results ?? [], "Tavily");
-}
-
-async function exa(query: string) {
-  const key = getSecret("EXA_API_KEY");
-  if (!key) return [];
-
-  const response = await withTimeout((signal) =>
-    fetch("https://api.exa.ai/search", {
-      method: "POST",
-      signal,
-      headers: {
-        "content-type": "application/json",
-        "x-api-key": key,
-      },
-      body: JSON.stringify({
-        query,
-        type: "auto",
-        numResults: 10,
-        contents: { highlights: { maxCharacters: 500 } },
-      }),
-    }),
-  );
-
-  if (!response.ok) throw new Error(`Exa ${response.status}`);
-  const data = (await response.json()) as { results?: unknown[] };
-  return normalize(data.results ?? [], "Exa");
-}
-
-async function firecrawl(query: string) {
-  const key = getSecret("FIRECRAWL_API_KEY");
-  if (!key) return [];
-
-  const response = await withTimeout((signal) =>
-    fetch("https://api.firecrawl.dev/v2/search", {
-      method: "POST",
-      signal,
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${key}`,
-      },
-      body: JSON.stringify({
-        query,
-        limit: 10,
-        scrapeOptions: { formats: ["markdown"] },
-      }),
-    }),
-  );
-
-  if (!response.ok) throw new Error(`Firecrawl ${response.status}`);
-  const data = (await response.json()) as {
-    data?: unknown[];
-    results?: unknown[];
-  };
-  return normalize(data.data ?? data.results ?? [], "Firecrawl");
 }
 
 export const GET: APIRoute = async ({ url }) => {
@@ -149,21 +93,12 @@ export const GET: APIRoute = async ({ url }) => {
   if (!query) return json({ results: [], providers: [] });
   if (query.length > 200) return json({ error: "Query too long" }, 400);
 
-  const [tavilyResult, exaResult, firecrawlResult] = await Promise.allSettled([
-    tavily(query),
-    exa(query),
-    firecrawl(query),
-  ]);
+  const [tavilyResult] = await Promise.allSettled([tavily(query)]);
 
-  const results = [tavilyResult, exaResult, firecrawlResult].flatMap((result) =>
-    result.status === "fulfilled" ? result.value : [],
-  );
+  const results =
+    tavilyResult.status === "fulfilled" ? tavilyResult.value : [];
 
-  const providers = [
-    getSecret("TAVILY_API_KEY") ? "Tavily" : null,
-    getSecret("EXA_API_KEY") ? "Exa" : null,
-    getSecret("FIRECRAWL_API_KEY") ? "Firecrawl" : null,
-  ].filter((value): value is string => Boolean(value));
+  const providers = getSecret("TAVILY_API_KEY") ? ["Tavily"] : [];
 
   const unique = new Map<string, SearchResult>();
   for (const result of results) {
