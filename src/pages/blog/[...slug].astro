@@ -12,6 +12,26 @@ Astro.response.headers.set("Cache-Control", "public, s-maxage=86400, stale-while
 Astro.response.headers.set("CDN-Cache-Control", "public, max-age=86400, stale-while-revalidate=604800");
 ---
 <BaseLayout title={article.title + " — Shopes Blog"} description={article.description}>
+  <meta slot="head" name="robots" content="index,follow,max-image-preview:large" />
+  <meta slot="head" property="og:type" content="article" />
+  <meta slot="head" property="og:site_name" content="Shopes Blog" />
+  <meta slot="head" property="og:url" content={Astro.url.href} />
+  <meta slot="head" property="og:title" content={article.title} />
+  <meta slot="head" property="og:description" content={article.description} />
+  <meta slot="head" name="twitter:card" content="summary" />
+  <meta slot="head" name="twitter:title" content={article.title} />
+  <meta slot="head" name="twitter:description" content={article.description} />
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description: article.description,
+    mainEntityOfPage: Astro.url.href,
+    url: Astro.url.href,
+    publisher: { "@type": "Organization", name: "Shopes Blog", url: "https://shopes.online" },
+    author: { "@type": "Organization", name: "Shopes Blog" },
+    articleSection: "Shopping Guides"
+  })} />
   <main class="wrap py-10 sm:py-14">
     <article class="mx-auto max-w-4xl">
       <a href="/blog" class="text-sm font-bold text-white/50 transition hover:text-[var(--accent)]">← Shopes Blog</a>
