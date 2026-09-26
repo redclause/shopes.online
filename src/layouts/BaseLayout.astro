@@ -1,6 +1,33 @@
 ---
 import "../styles/global.css";
-const {title="Shopes — directory & local shops",description="A fast, hand-indexed web directory and local shops search engine."}=Astro.props;
+const { title = "Shopes — live web search", description = "A fast search engine for the live web, local shops, websites, and useful places." } = Astro.props;
 ---
-<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width"/><title>{title}</title><meta name="description" content={description}/><meta property="og:title" content={title}/><meta property="og:description" content={description}/><link rel="canonical" href={Astro.url}/></head>
-<body><header class="border-b border-[var(--line)] bg-[var(--paper)]"><div class="wrap flex h-18 items-center justify-between gap-6"><a href="/" class="text-xl font-black tracking-tight">shopes<span class="text-lime-600">.</span></a><nav class="hidden gap-6 text-sm font-semibold sm:flex"><a href="/categories">Categories</a><a href="/shops">Local Shops</a><a href="/directory">Web Directory</a></nav><a href="/submit" class="rounded-full bg-[var(--ink)] px-4 py-2 text-xs font-bold text-white">Submit</a></div></header><slot/><footer class="wrap border-t border-[var(--line)] py-10 text-sm text-[var(--muted)]"><div class="flex flex-col gap-3 sm:flex-row sm:justify-between"><span>Shopes — a focused web & local directory.</span><a href="/beta" class="font-semibold text-[var(--ink)]">Beta access</a></div></footer></body></html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <link rel="canonical" href={Astro.url} />
+  </head>
+  <body>
+    <header class="border-b border-[var(--line)] bg-[var(--paper)]">
+      <div class="wrap flex h-18 items-center justify-between gap-6">
+        <a href="/" class="text-xl font-black tracking-tight">shopes<span class="text-lime-600">.</span></a>
+        <nav class="hidden gap-6 text-sm font-semibold sm:flex">
+          <a href="/search">Search</a><a href="/categories">Categories</a><a href="/shops">Local Shops</a><a href="/directory">Directory</a>
+        </nav>
+        <a href="/search" class="rounded-full bg-[var(--ink)] px-4 py-2 text-xs font-bold text-white">Search</a>
+      </div>
+    </header>
+    <slot />
+    <footer class="wrap border-t border-[var(--line)] py-10 text-sm text-[var(--muted)]">
+      <div class="flex flex-col gap-3 sm:flex-row sm:justify-between">
+        <span>Shopes — live web search without manual website submissions.</span>
+        <a href="/beta" class="font-semibold text-[var(--ink)]">Beta access</a>
+      </div>
+    </footer>
+  </body>
+</html>
