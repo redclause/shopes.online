@@ -1,0 +1,39 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getArticleIdFromSlug, getArticle } from "../../data/shopping-articles";
+
+const slug = Astro.params.slug ?? "";
+const id = getArticleIdFromSlug(slug);
+const article = id ? getArticle(id) : null;
+
+if (!article) {
+  return Astro.redirect("/404");
+}
+
+Astro.response.headers.set("Cache-Control", "public, s-maxage=86400, stale-while-revalidate=604800");
+Astro.response.headers.set("CDN-Cache-Control", "public, max-age=86400, stale-while-revalidate=604800");
+---
+<BaseLayout title={article.title + " — Shopes"} description={article.description}>
+  <main class="wrap py-10 sm:py-14">
+    <article class="mx-auto max-w-4xl">
+      <div class="eyebrow">Shopes shopping guide</div>
+      <h1 class="mt-3 text-4xl font-black tracking-tight text-white sm:text-6xl">{article.title}</h1>
+      <p class="mt-5 max-w-3xl text-lg leading-8 text-[var(--muted)]">{article.description}</p>
+      <div class="mt-7 flex flex-wrap gap-2 text-xs font-bold text-white/50">
+        <span class="rounded-full border border-white/10 px-3 py-1.5">{article.category}</span>
+        <span class="rounded-full border border-white/10 px-3 py-1.5">{article.angle}</span>
+      </div>
+      <div class="glass mt-10 rounded-3xl p-6 sm:p-10">
+        <div class="shopping-article prose-shopes">
+          <Fragment set:html={article.content} />
+        </div>
+      </div>
+    </article>
+  </main>
+</BaseLayout>
+
+<style>
+  .prose-shopes :global(p){margin:0 0 1.25rem;color:var(--muted);font-size:1rem;line-height:1.9}
+  .prose-shopes :global(p:first-child){color:#dce4f5}
+  @media (min-width:640px){.prose-shopes :global(p){font-size:1.05rem;line-height:1.95}}
+</style>
