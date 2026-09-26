@@ -102,9 +102,6 @@ async function inspectSchema(url: string, domain: string) {
     if (lower.has("softwareapplication")) score += 80;
     if (lower.has("mobileapplication")) score += 80;
     if (lower.has("organization")) score += 10;
-    const commerceSignals = [/add to (cart|basket)/i, /buy now/i, /shopping cart/i, /checkout/i, /\\bprice\\b/i, /\\bproducts?\\b/i, /\\bshipping\\b/i];
-    if (commerceSignals.filter((pattern) => pattern.test(html)).length >= 3) score += 45;
-
     // Some major marketplaces do not expose OnlineStore JSON-LD consistently.
     // Strong commerce signals from the page can still qualify an otherwise valid shop.
     const commerceSignals = [
