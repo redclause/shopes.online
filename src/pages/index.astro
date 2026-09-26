@@ -1,0 +1,16 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import {categories,shops,listings} from "../data/directory";
+---
+<BaseLayout title="Shopes — local shops & web directory">
+<main>
+<section class="wrap py-20 text-center sm:py-28">
+<p class="mb-4 text-xs font-black uppercase tracking-[.22em] text-[var(--muted)]">Local shops + web directory</p>
+<h1 class="mx-auto max-w-4xl text-5xl font-black tracking-[-.055em] sm:text-7xl">Find useful places<br/><span class="text-lime-700">without the noise.</span></h1>
+<p class="mx-auto mt-6 max-w-xl text-base leading-7 text-[var(--muted)]">Search local shops and explore a hand-indexed web directory, organized by country and category.</p>
+<form action="/search" class="mx-auto mt-9 flex max-w-2xl overflow-hidden rounded-2xl border border-[var(--line)] bg-white p-1.5 shadow-sm"><input name="q" aria-label="Search directory" class="min-w-0 flex-1 bg-transparent px-4 py-3 text-base outline-none" placeholder="Search shops, categories or websites..." /><button class="rounded-xl bg-[var(--ink)] px-6 py-3 text-sm font-bold text-white">Search</button></form>
+</section>
+<section class="wrap pb-20"><div class="mb-6 flex items-end justify-between"><h2 class="text-2xl font-black">Top categories</h2><a href="/categories" class="text-sm font-bold">Browse all →</a></div><div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{categories.map(c=><a href={`/category/${c.slug}`} class="rounded-2xl border border-[var(--line)] bg-white p-5 transition hover:-translate-y-0.5 hover:border-lime-300"><span class="text-lg font-bold">{c.name}</span><span class="mt-2 block text-xs text-[var(--muted)]">{c.children?.length ?? 0} sections</span></a>)}</div></section>
+<section class="wrap pb-24"><div class="mb-6 flex items-end justify-between"><h2 class="text-2xl font-black">Local shops</h2><a href="/shops" class="text-sm font-bold">View all →</a></div><div class="grid gap-4 sm:grid-cols-2">{shops.map(s=><article class="rounded-2xl border border-[var(--line)] bg-white p-6"><p class="text-[10px] font-black uppercase tracking-widest text-[var(--muted)]">{s.city}, {s.country}</p><h3 class="mt-2 text-xl font-black">{s.name}</h3><p class="mt-2 text-sm leading-6 text-[var(--muted)]">{s.description}</p><a href={s.url} rel="noopener noreferrer" class="mt-5 inline-flex rounded-full bg-[var(--ink)] px-4 py-2 text-xs font-bold text-white">Visit →</a></article>)}</div></section>
+</main>
+</BaseLayout>
