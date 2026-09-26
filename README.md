@@ -1,24 +1,19 @@
 # Shopes.online
 
-A Next.js App Router starter for a curated online-shopping and affiliate editorial site.
+Astro-powered, SSG-first directory and local-shops search engine.
 
-## Current foundation
-- Next.js App Router with responsive Tailwind CSS v4 styling.
-- Server-rendered editorial homepage and category-first navigation.
-- Global affiliate disclosure placement and restrained product CTA styling.
-- Metadata defaults and image-host configuration.
+## Architecture
+- Astro 6 static generation for directory/category/shop pages.
+- Tailwind CSS v4 through Vite.
+- Pagefind build-time full-text search; no search server required.
+- Typed TypeScript directory data designed to migrate to SQLite or another lightweight indexed store later.
+- Hierarchical category routes and dedicated local-shop storefront pages.
+- Automated sitemap integration, canonical metadata, OpenGraph defaults, robots.txt and accessible mobile-first UI.
 
-## Planned production architecture
-- PostgreSQL (managed independently; not Neon or Supabase) with indexed category, slug, publication date, and full-text search columns.
-- Keyset pagination for large category collections; never load an entire category into memory.
-- Content stored as normalized records, with product references and affiliate destinations separated from editorial copy.
-- ISR/tag-based revalidation for published content, plus CDN caching for public pages.
-- Dynamic sitemap partitioning and per-post Open Graph metadata / JSON-LD.
+## Commands
+- `npm run dev`
+- `npm run check`
+- `npm run build`
+- `npm run preview`
 
-## Setup
-1. Install Node.js 20.9+.
-2. Run `npm install`.
-3. Run `npm run dev`.
-4. Set `NEXT_PUBLIC_SITE_URL` to the canonical public origin for production.
-
-This initial commit is a UI and framework scaffold, not a completed CMS, database integration, verified 100k-record benchmark, or deployed production service.
+The current repository contains a deliberately small seed dataset. It is the foundation for importing a substantially larger hand-indexed directory without changing the public URL model.
