@@ -1,4 +1,105 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { categories, listings, shops } from "../data/directory";
+
+const searchData = [
+  ...categories.map((category) => ({
+    type: "Category",
+    name: category.name,
+    description: `Browse ${category.name} and its directory sections.`,
+    url: `/category/${category.slug}`,
+    location: "Directory",
+    tags: category.children?.map((child) => child.name) ?? [],
+  })),
+  ...categories.flatMap((category) =>
+    (category.children ?? []).map((child) => ({
+      type: "Category",
+      name: child.name,
+      description: `${category.name} directory section.`,
+      url: `/category/${category.slug}/${child.slug}`,
+      location: category.name,
+      tags: [category.name],
+    })),
+  ),
+  ...listings.map((listing) => ({
+    type: "Web Directory",
+    name: listing.name,
+    description: listing.description,
+    url: listing.url,
+    location: listing.country,
+    tags: listing.tags,
+  })),
+  ...shops.map((shop) => ({
+    type: "Local Shop",
+    name: shop.name,
+    description: shop.description,
+    url: shop.url,
+    location: `${shop.city}, ${shop.country}`,
+    tags: shop.tags,
+  })),
+];
 ---
-<BaseLayout title="Search — Shopes"><main class="wrap py-14"><div id="search" class="min-h-[50vh]"></div></main><script>import {PagefindUI} from "@pagefind/default-ui"; new PagefindUI({element:"#search",showImages:false,showSubResults:false,bundlePath:"/pagefind/"})</script></BaseLayout>
+<BaseLayout title="Search — Shopes">
+  <main class="wrap py-14">
+    <div class="mx-auto max-w-4xl">
+      <p class="text-xs font-black uppercase tracking-widest text-[var(--muted)]">Fast directory search</p>
+      <h1 class="mt-3 text-5xl font-black tracking-tight">Search Shopes</h1>
+      <div class="mt-8 flex overflow-hidden rounded-2xl border border-[var(--line)] bg-white p-1.5 shadow-sm">
+        <input id="search-input" class="min-w-0 flex-1 bg-transparent px-4 py-3 outline-none" type="search" autocomplete="off" placeholder="Search shops, categories or websites..." />
+      </div>
+      <p id="search-status" class="mt-5 text-sm text-[var(--muted)]"></p>
+      <div id="search-results" class="mt-5 space-y-3"></div>
+    </div>
+  </main>
+  <script define:vars={{ searchData }}>
+    const input = document.querySelector("#search-input");
+    const status = document.querySelector("#search-status");
+    const results = document.querySelector("#search-results");
+    const data = searchData;
+
+    const escapeHtml = (value) =>
+      value.replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
+      }[char]));
+
+    const render = () => {
+      const query = input.value.trim().toLowerCase();
+      if (!query) {
+        status.textContent = "Search across categories, local shops, and the web directory.";
+        results.innerHTML = "";
+        return;
+      }
+
+      const terms = query.split(/\s+/).filter(Boolean);
+      const matches = data
+        .map((item) => {
+          const haystack = [item.name, item.description, item.type, item.location, ...item.tags].join(" ").toLowerCase();
+          const score = terms.reduce((total, term) => total + (haystack.includes(term) ? 1 : 0), 0);
+          return { item, score };
+        })
+        .filter((entry) => entry.score > 0)
+        .sort((a, b) => b.score - a.score || a.item.name.localeCompare(b.item.name))
+        .slice(0, 30);
+
+      status.textContent = matches.length ? `${matches.length} result${matches.length === 1 ? "" : "s"}` : "No matching results yet.";
+
+      results.innerHTML = matches.map(({ item }) => `
+        <article class="rounded-2xl border border-[var(--line)] bg-white p-5">
+          <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div class="min-w-0">
+              <p class="text-[10px] font-black uppercase tracking-widest text-[var(--muted)]">${escapeHtml(item.type)} · ${escapeHtml(item.location)}</p>
+              <h2 class="mt-2 text-lg font-black">${escapeHtml(item.name)}</h2>
+              <p class="mt-1 text-sm leading-6 text-[var(--muted)]">${escapeHtml(item.description)}</p>
+            </div>
+            <a href="${escapeHtml(item.url)}" ${item.url.startsWith("http") ? 'target="_blank" rel="noopener noreferrer"' : ""} class="shrink-0 rounded-full bg-[var(--ink)] px-5 py-2.5 text-center text-xs font-bold text-white">Visit →</a>
+          </div>
+        </article>
+      `).join("");
+    };
+
+    input.addEventListener("input", render);
+    const params = new URLSearchParams(window.location.search);
+    input.value = params.get("q") ?? "";
+    render();
+  </script>
+</BaseLayout>
