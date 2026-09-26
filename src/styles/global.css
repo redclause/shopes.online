@@ -1,0 +1,4 @@
+@import "tailwindcss";
+:root{--ink:#17231e;--muted:#66736c;--paper:#f8f8f3;--accent:#d7f36b;--line:#e2e7df}
+html{font-family:Inter,ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:var(--paper)}
+body{margin:0;min-width:320px}a{text-decoration:none;color:inherit}.wrap{max-width:1240px;margin:auto;padding-inline:24px}
