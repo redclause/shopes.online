@@ -13,12 +13,6 @@ type SearchResult = {
 };
 
 const APP_STORE_DOMAINS = new Set(["apps.apple.com", "play.google.com"]);
-const MARKETPLACE_DOMAINS = new Set([
-  "amazon.com", "walmart.com", "target.com", "bestbuy.com", "ebay.com", "etsy.com",
-  "homedepot.com", "lowes.com", "costco.com", "macys.com", "nike.com", "adidas.com",
-  "apple.com", "samsung.com", "microsoft.com", "sephora.com", "wayfair.com",
-]);
-const COMMERCE_WORDS = /add to (cart|basket)|buy now|shopping cart|checkout|price|products?|shipping|shop now|store/i;
 
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), {
   status,
@@ -32,7 +26,7 @@ const normalize = (items: unknown[], source: string): SearchResult[] => items.ma
   const item = raw as Record<string, unknown>;
   const url = String(item.url ?? item.link ?? "");
   let domain = "";
-  try { domain = new URL(url).hostname.replace(/^www\\./, "").toLowerCase(); } catch {}
+  try { domain = new URL(url).hostname.replace(/^www\./, "").toLowerCase(); } catch {}
   return {
     title: String(item.title ?? item.name ?? "Untitled result"),
     url,
@@ -65,57 +59,68 @@ const schemaTypes = (value: unknown) =>
     ? value.filter((v): v is string => typeof v === "string")
     : typeof value === "string" ? [value] : [];
 
-async function inspectSchema(url: string, domain: string, candidateText = "") {
+async function inspectSchema(url: string, domain: string) {
   const appStore = APP_STORE_DOMAINS.has(domain);
-  const marketplace = MARKETPLACE_DOMAINS.has(domain) || [...MARKETPLACE_DOMAINS].some((d) => domain.endsWith("." + d));
-  let score = appStore ? 100 : marketplace ? 75 : 25;
-  let types: string[] = [];
-  let name: string | undefined;
-  let description: string | undefined;
-
   try {
     const response = await withTimeout((signal) => fetch(url, {
       signal,
       redirect: "follow",
-      headers: { accept: "text/html,application/xhtml+xml", "user-agent": "ShopesBot/1.0 (+https://shopes.online)" },
-    }), 3500);
-    if (!response.ok) return { score, types, name, description };
+      headers: {
+        accept: "text/html,application/xhtml+xml",
+        "user-agent": "ShopesBot/1.0 (+https://shopes.online)",
+      },
+    }), 5000);
+
+    if (!response.ok) return { score: appStore ? 100 : 0, types: [] as string[], name: undefined, description: undefined };
 
     const contentType = response.headers.get("content-type") ?? "";
-    if (!contentType.includes("text/html") && !contentType.includes("application/xhtml")) return { score, types, name, description };
+    if (!contentType.includes("text/html") && !contentType.includes("application/xhtml")) {
+      return { score: appStore ? 100 : 0, types: [] as string[], name: undefined, description: undefined };
+    }
 
-    const html = (await response.text()).slice(0, 1000000);
+    const html = (await response.text()).slice(0, 1500000);
     const nodes: Record<string, unknown>[] = [];
-    const jsonLdPattern = /<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
-    for (const match of html.matchAll(jsonLdPattern)) {
+
+    for (const match of html.matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)) {
       try { collectSchemaNodes(JSON.parse(match[1].trim()), nodes); } catch {}
     }
-    types = [...new Set(nodes.flatMap((node) => schemaTypes(node["@type"]).map((type) => type.split("/").pop() || type)))];
+
+    const types = [...new Set(nodes.flatMap((node) =>
+      schemaTypes(node["@type"]).map((type) => type.split("/").pop() || type),
+    ))];
+
     const lower = new Set(types.map((type) => type.toLowerCase()));
+    let score = appStore ? 100 : 0;
+
     if (lower.has("onlinestore")) score += 100;
     if (lower.has("onlinebusiness")) score += 55;
     if (lower.has("product")) score += 45;
     if (lower.has("offer")) score += 35;
     if (lower.has("aggregateoffer")) score += 20;
-    if (lower.has("softwareapplication") || lower.has("mobileapplication")) score += 80;
+    if (lower.has("softwareapplication")) score += 80;
+    if (lower.has("mobileapplication")) score += 80;
     if (lower.has("organization")) score += 10;
 
-    const combined = (candidateText + " " + html).toLowerCase();
-    const signalCount = [
-      /add to (cart|basket)/i, /buy now/i, /shopping cart/i, /checkout/i,
-      /\\bprice\\b/i, /\\bproducts?\\b/i, /\\bshipping\\b/i, /shop now/i, /store/i,
-    ].filter((pattern) => pattern.test(combined)).length;
-    if (signalCount >= 2) score += 35;
-    if (signalCount >= 4) score += 25;
+    const store = nodes.find((node) =>
+      schemaTypes(node["@type"]).some((type) =>
+        ["OnlineStore", "OnlineBusiness", "Organization", "SoftwareApplication", "MobileApplication"].includes(type),
+      ),
+    );
 
-    const store = nodes.find((node) => schemaTypes(node["@type"]).some((type) =>
-      ["OnlineStore", "OnlineBusiness", "Organization", "SoftwareApplication", "MobileApplication"].includes(type)));
-    name = typeof store?.name === "string" ? store.name : undefined;
-    description = typeof store?.description === "string" ? store.description : undefined;
+    return {
+      score,
+      types,
+      name: typeof store?.name === "string" ? store.name : undefined,
+      description: typeof store?.description === "string" ? store.description : undefined,
+    };
   } catch {
-    // Search results remain eligible from domain/Tavily commerce signals even when a site blocks verification.
+    return {
+      score: appStore ? 100 : 0,
+      types: [] as string[],
+      name: undefined,
+      description: undefined,
+    };
   }
-  return { score, types, name, description };
 }
 
 async function tavily(query: string) {
@@ -127,7 +132,7 @@ async function tavily(query: string) {
     query,
     "Prioritize pages that represent something users can shop from or install.",
     "For mobile apps, prefer official Apple App Store or Google Play listings.",
-    "Avoid news, articles, blogs, social media, directories, reviews, guides, and informational pages when a direct shop or app-store page is available.",
+    "Avoid news, articles, blogs, social media, directories, reviews, guides, and informational pages.",
   ].join(" ");
 
   const response = await withTimeout((signal) => fetch("https://api.tavily.com/search", {
@@ -163,7 +168,7 @@ export const GET: APIRoute = async ({ url }) => {
   const candidates = tavilyResult.status === "fulfilled" ? tavilyResult.value : [];
 
   const enriched = await Promise.all(candidates.map(async (result) => {
-    const schema = await inspectSchema(result.url, result.domain, result.title + " " + result.description);
+    const schema = await inspectSchema(result.url, result.domain);
     const resultType = result.resultType === "app" || schema.types.some((type) =>
       ["SoftwareApplication", "MobileApplication"].includes(type),
     ) ? "app" : "shop";
