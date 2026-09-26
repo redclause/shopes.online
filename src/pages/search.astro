@@ -1,105 +1,73 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { categories, listings, shops } from "../data/directory";
-
-const searchData = [
-  ...categories.map((category) => ({
-    type: "Category",
-    name: category.name,
-    description: `Browse ${category.name} and its directory sections.`,
-    url: `/category/${category.slug}`,
-    location: "Directory",
-    tags: category.children?.map((child) => child.name) ?? [],
-  })),
-  ...categories.flatMap((category) =>
-    (category.children ?? []).map((child) => ({
-      type: "Category",
-      name: child.name,
-      description: `${category.name} directory section.`,
-      url: `/category/${category.slug}/${child.slug}`,
-      location: category.name,
-      tags: [category.name],
-    })),
-  ),
-  ...listings.map((listing) => ({
-    type: "Web Directory",
-    name: listing.name,
-    description: listing.description,
-    url: listing.url,
-    location: listing.country,
-    tags: listing.tags,
-  })),
-  ...shops.map((shop) => ({
-    type: "Local Shop",
-    name: shop.name,
-    description: shop.description,
-    url: shop.url,
-    location: `${shop.city}, ${shop.country}`,
-    tags: shop.tags,
-  })),
-];
 ---
-<BaseLayout title="Search — Shopes">
+<BaseLayout title="Search the web — Shopes" description="Search the live web and discover local shops, websites, categories, and useful places.">
   <main class="wrap py-14">
     <div class="mx-auto max-w-4xl">
-      <p class="text-xs font-black uppercase tracking-widest text-[var(--muted)]">Fast directory search</p>
+      <p class="text-xs font-black uppercase tracking-widest text-[var(--muted)]">Live web search</p>
       <h1 class="mt-3 text-5xl font-black tracking-tight">Search Shopes</h1>
-      <div class="mt-8 flex overflow-hidden rounded-2xl border border-[var(--line)] bg-white p-1.5 shadow-sm">
-        <input id="search-input" class="min-w-0 flex-1 bg-transparent px-4 py-3 outline-none" type="search" autocomplete="off" placeholder="Search shops, categories or websites..." />
-      </div>
-      <p id="search-status" class="mt-5 text-sm text-[var(--muted)]"></p>
+      <p class="mt-4 max-w-2xl text-sm leading-6 text-[var(--muted)]">Shopes searches the live internet instead of requiring businesses or websites to be submitted manually.</p>
+      <form id="search-form" class="mt-8 flex overflow-hidden rounded-2xl border border-[var(--line)] bg-white p-1.5 shadow-sm">
+        <input id="search-input" name="q" class="min-w-0 flex-1 bg-transparent px-4 py-3 outline-none" type="search" autocomplete="off" placeholder="Search the web..." />
+        <button class="rounded-xl bg-[var(--ink)] px-6 py-3 text-sm font-bold text-white" type="submit">Search</button>
+      </form>
+      <p id="search-status" class="mt-5 text-sm text-[var(--muted)]">Search the live web.</p>
       <div id="search-results" class="mt-5 space-y-3"></div>
     </div>
   </main>
-  <script define:vars={{ searchData }}>
+  <script>
+    const form = document.querySelector("#search-form");
     const input = document.querySelector("#search-input");
     const status = document.querySelector("#search-status");
     const results = document.querySelector("#search-results");
-    const data = searchData;
 
-    const escapeHtml = (value) =>
-      value.replace(/[&<>"']/g, (char) => ({
-        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
-      }[char]));
+    const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
+    }[char]));
 
-    const render = () => {
-      const query = input.value.trim().toLowerCase();
-      if (!query) {
-        status.textContent = "Search across categories, local shops, and the web directory.";
-        results.innerHTML = "";
-        return;
-      }
-
-      const terms = query.split(/\s+/).filter(Boolean);
-      const matches = data
-        .map((item) => {
-          const haystack = [item.name, item.description, item.type, item.location, ...item.tags].join(" ").toLowerCase();
-          const score = terms.reduce((total, term) => total + (haystack.includes(term) ? 1 : 0), 0);
-          return { item, score };
-        })
-        .filter((entry) => entry.score > 0)
-        .sort((a, b) => b.score - a.score || a.item.name.localeCompare(b.item.name))
-        .slice(0, 30);
-
-      status.textContent = matches.length ? `${matches.length} result${matches.length === 1 ? "" : "s"}` : "No matching results yet.";
-
-      results.innerHTML = matches.map(({ item }) => `
+    const render = (items) => {
+      results.innerHTML = items.map((item) => `
         <article class="rounded-2xl border border-[var(--line)] bg-white p-5">
           <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div class="min-w-0">
-              <p class="text-[10px] font-black uppercase tracking-widest text-[var(--muted)]">${escapeHtml(item.type)} · ${escapeHtml(item.location)}</p>
-              <h2 class="mt-2 text-lg font-black">${escapeHtml(item.name)}</h2>
-              <p class="mt-1 text-sm leading-6 text-[var(--muted)]">${escapeHtml(item.description)}</p>
+              <p class="text-[10px] font-black uppercase tracking-widest text-[var(--muted)]">${escapeHtml(item.domain || item.source)}</p>
+              <h2 class="mt-2 text-lg font-black"><a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.title)}</a></h2>
+              <p class="mt-1 text-sm leading-6 text-[var(--muted)]">${escapeHtml(item.description || "No description available.")}</p>
             </div>
-            <a href="${escapeHtml(item.url)}" ${item.url.startsWith("http") ? 'target="_blank" rel="noopener noreferrer"' : ""} class="shrink-0 rounded-full bg-[var(--ink)] px-5 py-2.5 text-center text-xs font-bold text-white">Visit →</a>
+            <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer" class="shrink-0 rounded-full bg-[var(--ink)] px-5 py-2.5 text-center text-xs font-bold text-white">Visit →</a>
           </div>
         </article>
       `).join("");
     };
 
-    input.addEventListener("input", render);
-    const params = new URLSearchParams(window.location.search);
-    input.value = params.get("q") ?? "";
-    render();
+    const search = async (query) => {
+      status.textContent = "Searching the live web…";
+      results.innerHTML = "";
+      try {
+        const response = await fetch("/api/search?q=" + encodeURIComponent(query), { headers: { accept: "application/json" } });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Search failed");
+        render(data.results || []);
+        status.textContent = data.results?.length
+          ? `${data.results.length} web results${data.providers?.length ? " · " + data.providers.join(" + ") : ""}`
+          : "No web results yet. Add a search provider key in Vercel to enable live results.";
+      } catch (error) {
+        status.textContent = error instanceof Error ? error.message : "Search failed.";
+      }
+    };
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const query = input.value.trim();
+      if (!query) return;
+      history.replaceState(null, "", "/search?q=" + encodeURIComponent(query));
+      search(query);
+    });
+
+    const initial = new URLSearchParams(window.location.search).get("q")?.trim();
+    if (initial) {
+      input.value = initial;
+      search(initial);
+    }
   </script>
 </BaseLayout>
