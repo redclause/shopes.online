@@ -1,28 +1,43 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { categories, shops } from "../data/directory";
+import { categories } from "../data/directory";
 ---
-<BaseLayout title="Shopes — search the live web" description="A fast search engine for the live web, local shops, websites, and useful places.">
-  <main>
-    <section class="wrap py-20 text-center sm:py-28">
-      <p class="mb-4 text-xs font-black uppercase tracking-[.22em] text-[var(--muted)]">Live web search</p>
-      <h1 class="mx-auto max-w-4xl text-5xl font-black tracking-[-.055em] sm:text-7xl">Search the web<br/><span class="text-lime-700">without the noise.</span></h1>
-      <p class="mx-auto mt-6 max-w-xl text-base leading-7 text-[var(--muted)]">Find websites, local shops, places, and useful information directly from the live internet. No manual website submission is required.</p>
-      <form action="/search" class="mx-auto mt-9 flex max-w-2xl overflow-hidden rounded-2xl border border-[var(--line)] bg-white p-1.5 shadow-sm">
-        <input name="q" aria-label="Search the web" class="min-w-0 flex-1 bg-transparent px-4 py-3 text-base outline-none" placeholder="Search the web..." />
-        <button class="rounded-xl bg-[var(--ink)] px-6 py-3 text-sm font-bold text-white">Search</button>
+<BaseLayout title="Shopes — search the live web" description="A fast, beautifully designed search engine for the live web, local shops, websites and useful places.">
+  <main class="relative overflow-hidden">
+    <div class="hero-orb pulse-glow left-[8%] top-24 size-32 bg-[rgba(110,231,255,.12)] blur-3xl"></div>
+    <div class="hero-orb pulse-glow right-[8%] top-44 size-40 bg-[rgba(163,255,111,.10)] blur-3xl"></div>
+    <section class="wrap relative flex min-h-[640px] flex-col items-center justify-center py-24 text-center">
+      <div class="float mb-7 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-bold text-white/70 backdrop-blur">
+        <span class="size-2 rounded-full bg-[var(--accent)] shadow-[0_0_14px_var(--accent)]"></span>
+        Live web discovery
+      </div>
+      <h1 class="max-w-5xl text-6xl font-black tracking-[-.065em] text-white sm:text-8xl">
+        Search the web.<br/><span class="bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] bg-clip-text text-transparent">Find more.</span>
+      </h1>
+      <p class="mt-7 max-w-2xl text-base leading-7 text-[var(--muted)] sm:text-lg">A focused search engine for websites, local shops and useful places — discovered from the live internet, not a closed manually submitted database.</p>
+      <form action="/search" class="search-shell glass mt-10 flex w-full max-w-3xl overflow-hidden rounded-2xl p-2 text-left">
+        <span class="grid size-12 shrink-0 place-items-center text-xl text-white/40">⌕</span>
+        <input name="q" aria-label="Search the web" class="min-w-0 flex-1 bg-transparent px-2 text-base text-white outline-none placeholder:text-white/30 sm:text-lg" placeholder="What are you looking for?" />
+        <button class="search-button rounded-xl px-6 text-sm font-black sm:px-8">Search</button>
       </form>
-    </section>
-    <section class="wrap pb-20">
-      <div class="mb-6 flex items-end justify-between"><h2 class="text-2xl font-black">Explore categories</h2><a href="/categories" class="text-sm font-bold">Browse all →</a></div>
-      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {categories.map(c=><a href={`/category/${c.slug}`} class="rounded-2xl border border-[var(--line)] bg-white p-5 transition hover:-translate-y-0.5 hover:border-lime-300"><span class="text-lg font-bold">{c.name}</span><span class="mt-2 block text-xs text-[var(--muted)]">{c.children?.length??0} sections</span></a>)}
+      <div class="mt-5 flex flex-wrap justify-center gap-2 text-xs text-white/40">
+        <a href="/search?q=coffee+shops" class="rounded-full border border-white/10 px-3 py-1.5 transition hover:border-white/20 hover:text-white">coffee shops</a>
+        <a href="/search?q=web+design" class="rounded-full border border-white/10 px-3 py-1.5 transition hover:border-white/20 hover:text-white">web design</a>
+        <a href="/search?q=travel+guides" class="rounded-full border border-white/10 px-3 py-1.5 transition hover:border-white/20 hover:text-white">travel guides</a>
       </div>
     </section>
+
     <section class="wrap pb-24">
-      <div class="mb-6 flex items-end justify-between"><h2 class="text-2xl font-black">Local shop examples</h2><a href="/shops" class="text-sm font-bold">View all →</a></div>
-      <div class="grid gap-4 sm:grid-cols-2">
-        {shops.map(s=><article class="rounded-2xl border border-[var(--line)] bg-white p-6"><p class="text-[10px] font-black uppercase tracking-widest text-[var(--muted)]">{s.city}, {s.country}</p><h3 class="mt-2 text-xl font-black">{s.name}</h3><p class="mt-2 text-sm leading-6 text-[var(--muted)]">{s.description}</p><a href="/search?q={encodeURIComponent(s.name)}" class="mt-5 inline-flex rounded-full bg-[var(--ink)] px-4 py-2 text-xs font-bold text-white">Search the web →</a></article>)}
+      <div class="mb-7 flex items-end justify-between">
+        <div><p class="eyebrow">Explore</p><h2 class="mt-2 text-3xl font-black">Search by interest</h2></div>
+        <a href="/categories" class="hidden text-sm font-bold text-white/60 transition hover:text-[var(--accent)] sm:block">All categories →</a>
+      </div>
+      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {categories.map((c, i) => <a href={`/category/${c.slug}`} class="glass group rounded-2xl p-6 transition duration-300 hover:-translate-y-1 hover:border-[var(--accent)]/30" style={`animation-delay:${i * 80}ms`}>
+          <div class="mb-10 flex items-center justify-between"><span class="text-2xl">{["◈","◇","○","△"][i] ?? "◈"}</span><span class="text-xs text-white/30">{c.children?.length ?? 0} sections</span></div>
+          <h3 class="text-lg font-black transition group-hover:text-[var(--accent)]">{c.name}</h3>
+          <p class="mt-2 text-sm leading-6 text-[var(--muted)]">Explore websites and places in this category.</p>
+        </a>)}
       </div>
     </section>
   </main>
