@@ -16,7 +16,7 @@ export const GET: APIRoute = ({ params, site }) => {
   for (let id = start; id <= end; id++) {
     const article = getArticleMeta(id);
     if (article) {
-      urls.push("<url><loc>" + new URL("/shopping/" + article.slug, base).href + "</loc></url>");
+      urls.push("<url><loc>" + new URL("/blog/" + article.slug, base).href + "</loc></url>");
     }
   }
 
