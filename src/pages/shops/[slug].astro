@@ -1,0 +1,6 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro"; import {shops} from "../../data/directory";
+export function getStaticPaths(){return shops.map(shop=>({params:{slug:shop.slug},props:{shop}}))}
+const {shop}=Astro.props;
+---
+<BaseLayout title={`${shop.name} — Shopes`}><main class="wrap py-16"><p class="text-xs font-black uppercase tracking-widest text-[var(--muted)]">Local shop · {shop.city}</p><h1 class="mt-3 text-5xl font-black">{shop.name}</h1><p class="mt-5 max-w-2xl text-lg leading-8 text-[var(--muted)]">{shop.description}</p><div class="mt-8 flex flex-wrap gap-2">{shop.tags.map(t=><span class="rounded-full border border-[var(--line)] bg-white px-3 py-1.5 text-xs">{t}</span>)}</div><a href={shop.url} rel="noopener noreferrer" class="mt-10 inline-flex rounded-full bg-[var(--ink)] px-6 py-3 text-sm font-bold text-white">Visit storefront →</a></main></BaseLayout>
