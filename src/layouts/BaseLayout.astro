@@ -1,7 +1,7 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
-const { title = "Shopes — search shops and apps", description = "A focused search engine for online shops, official stores, and app stores." } = Astro.props;
+const { title = "Shopes — search shops and apps", description = "A focused search engine for online shops, official stores, and app stores.", hideHeader = false } = Astro.props;
 ---
 <html lang="en">
   <head>
@@ -15,12 +15,14 @@ const { title = "Shopes — search shops and apps", description = "A focused sea
     <ClientRouter />
   </head>
   <body>
-    <header class="shopes-header homepage-logo">
-      <a href="/" class="shopes-logo" aria-label="Shopes home">
-        <span class="shopes-logo-mark" aria-hidden="true">S</span>
-        <span>shopes</span>
-      </a>
-    </header>
+    {!hideHeader && (
+      <header class="shopes-header">
+        <a href="/" class="shopes-logo" aria-label="Shopes home">
+          <span class="shopes-logo-mark" aria-hidden="true">S</span>
+          <span>shopes</span>
+        </a>
+      </header>
+    )}
     <slot />
   </body>
 </html>
