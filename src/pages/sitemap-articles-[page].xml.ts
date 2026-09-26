@@ -1,5 +1,7 @@
 ---
 import type { APIRoute } from "astro";
+
+export const prerender = true;
 import { ARTICLE_COUNT, getArticleMeta } from "../data/shopping-articles";
 
 const PAGE_SIZE = 1000;
