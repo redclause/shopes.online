@@ -21,13 +21,20 @@ const slugify=(s:string)=>s.toLowerCase().replace(/&/g," and ").replace(/[^a-z0-
 const titleCase=(s:string)=>s.split(" ").map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(" ");
 
 export type ShoppingArticle={id:number;slug:string;title:string;category:string;theme:string;angle:string;description:string;content:string};
+export type ShoppingArticleMeta=Omit<ShoppingArticle,"content">;
 
 export function articleIdToParts(id:number){if(!Number.isInteger(id)||id<1||id>ARTICLE_COUNT)return null;const z=id-1;return{angleIndex:z%angles.length,themeIndex:Math.floor(z/angles.length)%themes.length,categoryIndex:Math.floor(z/(angles.length*themes.length))%shoppingCategories.length};}
-export function getArticle(id:number):ShoppingArticle|null{
+export function getArticleMeta(id:number):ShoppingArticleMeta|null{
  const p=articleIdToParts(id);if(!p)return null;
  const category=shoppingCategories[p.categoryIndex],theme=themes[p.themeIndex],angle=angles[p.angleIndex];
  const title=titleCase(category)+": "+titleCase(theme)+" for "+titleCase(angle);
  const slug=String(id).padStart(6,"0")+"-"+slugify(category)+"-"+slugify(theme)+"-"+slugify(angle);
+ return{id,slug,title,category,theme,angle,description:"A practical shopping guide to "+category+", covering "+theme+" with a focus on "+angle+"."};
+}
+export function getArticle(id:number):ShoppingArticle|null{
+ const meta=getArticleMeta(id);if(!meta)return null;
+ const {category,theme,angle}=meta;
+ const {title,slug,description}=meta;
  const blocks=[
   "Start with the actual shopping need. Define where the product will be used, how often it will be used, who will use it, and which constraints matter before comparing stores or models.",
   "Read complete product specifications instead of relying on promotional headlines. For "+category+", compare dimensions, materials, capacity, compatibility, included accessories, and any technical requirements that affect everyday use.",
@@ -48,4 +55,4 @@ export function getArticle(id:number):ShoppingArticle|null{
  for(let i=0;content.length<10500;i++) content+="<p>"+blocks[i%blocks.length]+" The comparison should remain specific to the shopper's needs, because "+angle+" can matter differently across products, households, budgets, and shopping situations.</p>";
  return{id,slug,title,category,theme,angle,description:"A practical shopping guide to "+category+", covering "+theme+" with a focus on "+angle+".",content};
 }
-export function getArticleIdFromSlug(slug:string){const m=slug.match(/^(\d{6})-/);if(!m)return null;const id=Number(m[1]);const a=getArticle(id);return a&&a.slug===slug?id:null;}
+export function getArticleIdFromSlug(slug:string){const m=slug.match(/^(\d{6})-/);if(!m)return null;const id=Number(m[1]);const a=getArticleMeta(id);return a&&a.slug===slug?id:null;}
