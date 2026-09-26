@@ -39,14 +39,15 @@ const initialQuery = Astro.url.searchParams.get("q") ?? "";
       results.innerHTML = items.map((item, index) => {
         const description = String(item.description || "").replace(/\s+/g, " ").trim();
         const shortDescription = description.length > 180 ? `${description.slice(0, 180).replace(/\s+\S*$/, "")}…` : description;
-        const label = item.resultType === "app" ? "App" : "Shop";\n        const schema = Array.isArray(item.schemaTypes) && item.schemaTypes.length ? item.schemaTypes.slice(0, 4).join(" · ") : "ecommerce signal";
+        const label = item.resultType === "app" ? "App" : "Shop";
+        const schema = Array.isArray(item.schemaTypes) && item.schemaTypes.length ? item.schemaTypes.slice(0, 4).join(" · ") : "ecommerce signal";
         return `
           <article class="result-card rounded-2xl p-5 opacity-0" style="animation:resultIn .45s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:${Math.min(index * 35, 350)}ms">
             <div class="min-w-0">
               <div class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-white/35"><span class="size-1.5 rounded-full bg-[var(--accent)]"></span>${escapeHtml(label)} · ${escapeHtml(item.domain || item.source)}</div>
               <h2 class="mt-2 text-lg font-black leading-snug text-white"><a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer" class="transition hover:text-[var(--accent)]">${escapeHtml(item.title)}</a></h2>
               ${shortDescription ? `<p class="mt-1 text-sm leading-6 text-[var(--muted)]">${escapeHtml(shortDescription)}</p>` : ""}
-              <div class="mt-4"><a href="${submitUrl}" class="text-xs font-bold text-[var(--accent)] transition hover:text-white">Submit this website →</a></div>
+              <div class="mt-4 text-xs font-bold text-[var(--accent)]">Verified · ${escapeHtml(schema)}</div>
             </div>
           </article>`;
       }).join("");
