@@ -11,9 +11,9 @@ a{text-decoration:none;color:inherit}button,input{font:inherit}.wrap{width:min(1
 .result-card{background:linear-gradient(145deg,rgba(16,22,41,.88),rgba(10,14,25,.76));border:1px solid var(--line);transition:transform .25s ease,border-color .25s ease,background .25s ease}.result-card:hover{transform:translateY(-3px);border-color:rgba(163,255,111,.28);background:linear-gradient(145deg,rgba(21,29,50,.94),rgba(10,14,25,.86))}
 .eyebrow{color:var(--accent);letter-spacing:.2em;text-transform:uppercase;font-size:.68rem;font-weight:800}.muted{color:var(--muted)}
 @keyframes float{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-12px,0)}}@keyframes pulseGlow{0%,100%{opacity:.45;transform:scale(1)}50%{opacity:.8;transform:scale(1.08)}}
-.float{animation:float 7s ease-in-out infinite}.pulse-glow{animation:pulseGlow 5s ease-in-out infinite}::selection{background:rgba(163,255,111,.28);color:#fff}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.float,.pulse-glow{animation:none}.search-shell,.search-button,.result-card{transition:none}}
+.float{animation:float 7s ease-in-out infinite}.pulse-glow{animation:pulseGlow 5s ease-in-out infinite}@keyframes logoFloat{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-4px,0)}}@keyframes logoMark{0%,100%{transform:rotate(0deg) scale(1);box-shadow:0 8px 28px var(--glow)}35%{transform:rotate(-4deg) scale(1.04);box-shadow:0 10px 34px var(--glow)}65%{transform:rotate(4deg) scale(1.04);box-shadow:0 10px 34px var(--glow)}}::selection{background:rgba(163,255,111,.28);color:#fff}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.float,.pulse-glow,.shopes-logo,.shopes-logo-mark{animation:none}.search-shell,.search-button,.result-card{transition:none}}
 
-.shopes-logo{display:inline-flex;align-items:center;gap:10px;font-size:1.55rem;font-weight:900;letter-spacing:-.055em;color:#fff;transition:transform .2s ease,opacity .2s ease}
-.shopes-logo:hover{transform:translateY(-1px);opacity:.92}
-.shopes-logo-mark{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#071006;font-size:.9rem;font-weight:1000;box-shadow:0 8px 28px var(--glow)}
+.shopes-logo{display:inline-flex;align-items:center;gap:10px;font-size:1.55rem;font-weight:900;letter-spacing:-.055em;color:#fff;transition:transform .2s ease,opacity .2s ease;animation:logoFloat 5s ease-in-out infinite}
+.shopes-logo:hover{transform:translateY(-2px) scale(1.015);opacity:.96}.shopes-logo:hover .shopes-logo-mark{animation-play-state:paused}
+.shopes-logo-mark{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#071006;font-size:.9rem;font-weight:1000;box-shadow:0 8px 28px var(--glow);animation:logoMark 3.5s ease-in-out infinite;transform-origin:center}
