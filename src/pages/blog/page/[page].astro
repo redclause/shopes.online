@@ -20,6 +20,10 @@ const next = page < pageCount ? "/blog/page/" + (page + 1) : null;
 <BaseLayout title={`Shopes Blog — Page ${page}`} description={`Shopes online shopping articles, page ${page} of ${pageCount}.`}>
   <main class="wrap py-10 sm:py-14">
     <div class="mx-auto max-w-6xl">
+      <a href="/" class="shopes-logo mb-8" aria-label="Shopes home">
+        <span class="shopes-logo-mark" aria-hidden="true">S</span>
+        <span>shopes</span>
+      </a>
       <p class="eyebrow">Shopes Blog · Page {page.toLocaleString()}</p>
       <h1 class="mt-3 text-4xl font-black tracking-tight sm:text-6xl">Online shopping knowledge.</h1>
       <p class="mt-5 max-w-3xl text-lg leading-8 text-[var(--muted)]">Articles {start.toLocaleString()}–{end.toLocaleString()} of {ARTICLE_COUNT.toLocaleString()}, covering online shopping, products, retailers, stores, buying research, and purchase decisions.</p>
