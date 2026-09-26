@@ -1,8 +1,0 @@
----
-import BaseLayout from "../../layouts/BaseLayout.astro"; import {categories,listings} from "../../data/directory";
-export const prerender = true;
-
-export function getStaticPaths(){return categories.map(category=>({params:{slug:category.slug},props:{category}}))}
-const {category}=Astro.props; const entries=listings.filter(x=>x.category===category.slug);
----
-<BaseLayout title={`${category.name} — Shopes`}><main class="wrap py-14"><p class="text-xs font-black uppercase tracking-widest text-[var(--muted)]">Directory category</p><h1 class="mt-3 text-5xl font-black">{category.name}</h1><p class="mt-4 max-w-2xl text-[var(--muted)]">Explore this section of the Shopes hand-indexed directory.</p><div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">{category.children?.map(ch=><a href={`/category/${category.slug}/${ch.slug}`} class="rounded-2xl border border-[var(--line)] bg-white p-5"><span class="font-bold">{ch.name}</span><span class="mt-2 block text-xs text-[var(--muted)]">Browse section →</span></a>)}</div><div class="mt-12 space-y-3">{entries.map(x=><article data-pagefind-body class="rounded-2xl border border-[var(--line)] bg-white p-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"><div><h2 class="text-lg font-black">{x.name}</h2><p class="mt-1 text-sm text-[var(--muted)]">{x.description}</p></div><a href={x.url} rel="noopener noreferrer" class="rounded-full bg-[var(--ink)] px-5 py-2.5 text-center text-xs font-bold text-white">Visit →</a></article>)}</div></main></BaseLayout>

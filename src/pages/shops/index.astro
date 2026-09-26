@@ -1,4 +1,0 @@
----
-import BaseLayout from "../../layouts/BaseLayout.astro"; import {shops} from "../../data/directory";
----
-<BaseLayout title="Local Shops — Shopes"><main class="wrap py-14"><p class="text-xs font-black uppercase tracking-widest text-[var(--muted)]">Local search</p><h1 class="mt-3 text-5xl font-black">Local Shops</h1><div class="mt-10 grid gap-4 sm:grid-cols-2">{shops.map(s=><article class="rounded-2xl border border-[var(--line)] bg-white p-6"><p class="text-[10px] font-black uppercase tracking-widest text-[var(--muted)]">{s.city}, {s.country}</p><h2 class="mt-2 text-xl font-black"><a href={`/shops/${s.slug}`}>{s.name}</a></h2><p class="mt-2 text-sm leading-6 text-[var(--muted)]">{s.description}</p><a href={s.url} rel="noopener noreferrer" class="mt-5 inline-flex rounded-full bg-[var(--ink)] px-4 py-2 text-xs font-bold text-white">Visit →</a></article>)}</div></main></BaseLayout>

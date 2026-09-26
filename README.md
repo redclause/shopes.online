@@ -1,19 +1,11 @@
-# Shopes.online
+# Shopes Blog
 
-Astro-powered, SSG-first directory and local-shops search engine.
+Shopes.online is a text-first publishing site focused on long-form shopping knowledge, guides, and articles.
 
-## Architecture
-- Astro 6 static generation for directory/category/shop pages.
-- Tailwind CSS v4 through Vite.
-- Pagefind build-time full-text search; no search server required.
-- Typed TypeScript directory data designed to migrate to SQLite or another lightweight indexed store later.
-- Hierarchical category routes and dedicated local-shop storefront pages.
-- Automated sitemap integration, canonical metadata, OpenGraph defaults, robots.txt and accessible mobile-first UI.
+## Routes
 
-## Commands
-- `npm run dev`
-- `npm run check`
-- `npm run build`
-- `npm run preview`
+- /blog — article index
+- /blog/page/:page — paginated article index
+- /blog/:slug — individual article
 
-The current repository contains a deliberately small seed dataset. It is the foundation for importing a substantially larger hand-indexed directory without changing the public URL model.
+The repository intentionally contains no shopping search engine, shop directory, product submission, category/marketplace pages, or shopping-app tooling.
