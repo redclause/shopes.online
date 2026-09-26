@@ -6,16 +6,16 @@ import { categories } from "../data/directory";
   <main class="relative overflow-hidden">
     <div class="hero-orb pulse-glow left-[8%] top-24 size-32 bg-[rgba(110,231,255,.12)] blur-3xl"></div>
     <div class="hero-orb pulse-glow right-[8%] top-44 size-40 bg-[rgba(163,255,111,.10)] blur-3xl"></div>
-    <section class="wrap relative flex min-h-[640px] flex-col items-center justify-center py-24 text-center">
-      <div class="float mb-7 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-bold text-white/70 backdrop-blur">
+    <section class="wrap relative flex min-h-0 flex-col items-center justify-start pt-16 pb-16 text-center">
+      <div class="float mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-bold text-white/70 backdrop-blur">
         <span class="size-2 rounded-full bg-[var(--accent)] shadow-[0_0_14px_var(--accent)]"></span>
         Live shopping discovery
       </div>
       <h1 class="max-w-5xl text-6xl font-black tracking-[-.065em] text-white sm:text-8xl">
         Search shops.<br/><span class="bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] bg-clip-text text-transparent">Find more.</span>
       </h1>
-      <p class="mt-7 max-w-2xl text-base leading-7 text-[var(--muted)] sm:text-lg">A focused shopping search engine for online shops, official stores, products and apps — discovered from the live internet.</p>
-      <form action="/search" class="search-shell glass mt-10 flex w-full max-w-3xl overflow-hidden rounded-2xl p-2 text-left">
+      <p class="mt-4 max-w-2xl text-base leading-7 text-[var(--muted)] sm:text-lg">A focused shopping search engine for online shops, official stores, products and apps — discovered from the live internet.</p>
+      <form action="/search" class="search-shell glass mt-5 flex w-full max-w-3xl overflow-hidden rounded-2xl p-2 text-left">
         <span class="grid size-12 shrink-0 place-items-center text-xl text-white/40">⌕</span>
         <input name="q" aria-label="Search shops" class="min-w-0 flex-1 bg-transparent px-2 text-base text-white outline-none placeholder:text-white/30 sm:text-lg" placeholder="What are you looking for?" />
         <button class="search-button rounded-xl px-6 text-sm font-black sm:px-8">Search</button>
