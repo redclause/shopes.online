@@ -1,0 +1,45 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { ARTICLE_COUNT, getArticleMeta } from "../../../data/shopping-articles";
+
+const PAGE_SIZE = 100;
+const rawPage = Number(Astro.params.page);
+const page = Number.isInteger(rawPage) && rawPage >= 1 ? rawPage : 0;
+const pageCount = Math.ceil(ARTICLE_COUNT / PAGE_SIZE);
+
+if (page < 2 || page > pageCount) {
+  return Astro.redirect("/blog", 302);
+}
+
+const start = (page - 1) * PAGE_SIZE + 1;
+const end = Math.min(page * PAGE_SIZE, ARTICLE_COUNT);
+const articles = Array.from({ length: end - start + 1 }, (_, index) => getArticleMeta(start + index)).filter(Boolean);
+const previous = page === 2 ? "/blog" : "/blog/page/" + (page - 1);
+const next = page < pageCount ? "/blog/page/" + (page + 1) : null;
+---
+<BaseLayout title={`Shopes Blog — Page ${page}`} description={`Shopes online shopping articles, page ${page} of ${pageCount}.`}>
+  <main class="wrap py-10 sm:py-14">
+    <div class="mx-auto max-w-6xl">
+      <p class="eyebrow">Shopes Blog · Page {page.toLocaleString()}</p>
+      <h1 class="mt-3 text-4xl font-black tracking-tight sm:text-6xl">Online shopping knowledge.</h1>
+      <p class="mt-5 max-w-3xl text-lg leading-8 text-[var(--muted)]">Articles {start.toLocaleString()}–{end.toLocaleString()} of {ARTICLE_COUNT.toLocaleString()}, covering online shopping, products, retailers, stores, buying research, and purchase decisions.</p>
+
+      <section class="mt-10 grid gap-4 sm:grid-cols-2">
+        {articles.map((article) => article && (
+          <a href={"/blog/" + article.slug} class="result-card rounded-2xl p-6 transition hover:-translate-y-1">
+            <p class="text-xs font-black uppercase tracking-widest text-[var(--accent)]">Shopping guide · #{article.id.toLocaleString()}</p>
+            <h2 class="mt-3 text-xl font-black leading-snug text-white">{article.title}</h2>
+            <p class="mt-3 text-sm leading-6 text-[var(--muted)]">{article.description}</p>
+            <span class="mt-5 inline-block text-sm font-bold text-white/60">Read article →</span>
+          </a>
+        ))}
+      </section>
+
+      <nav class="mt-12 flex flex-wrap items-center justify-center gap-2" aria-label="Blog pagination">
+        <a href={previous} class="rounded-xl border border-white/10 px-4 py-2 text-sm font-bold text-white/70 transition hover:border-white/20 hover:text-white">← Previous</a>
+        <span class="rounded-xl border border-white/10 px-4 py-2 text-sm text-white/40">Page {page.toLocaleString()} of {pageCount.toLocaleString()}</span>
+        {next && <a href={next} class="rounded-xl border border-[var(--accent)]/30 px-4 py-2 text-sm font-bold text-[var(--accent)] transition hover:bg-[var(--accent)]/10">Next →</a>}
+      </nav>
+    </div>
+  </main>
+</BaseLayout>
