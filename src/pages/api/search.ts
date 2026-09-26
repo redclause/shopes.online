@@ -86,7 +86,7 @@ async function inspectSchema(url: string, domain: string, candidateText = "") {
 
     const html = (await response.text()).slice(0, 1000000);
     const nodes: Record<string, unknown>[] = [];
-    const jsonLdPattern = new RegExp("<script\\\\b[^>]*type=[\\\"']application\\\\/ld\\\\+json[\\\"'][^>]*>([\\\\s\\\\S]*?)<\\\\/script>", "gi");
+    const jsonLdPattern = /<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
     for (const match of html.matchAll(jsonLdPattern)) {
       try { collectSchemaNodes(JSON.parse(match[1].trim()), nodes); } catch {}
     }
@@ -163,7 +163,7 @@ export const GET: APIRoute = async ({ url }) => {
   const candidates = tavilyResult.status === "fulfilled" ? tavilyResult.value : [];
 
   const enriched = await Promise.all(candidates.map(async (result) => {
-    const schema = await inspectSchema(result.url, result.domain);
+    const schema = await inspectSchema(result.url, result.domain, result.title + " " + result.description);
     const resultType = result.resultType === "app" || schema.types.some((type) =>
       ["SoftwareApplication", "MobileApplication"].includes(type),
     ) ? "app" : "shop";
