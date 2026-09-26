@@ -6,7 +6,7 @@ import vercel from "@astrojs/vercel";
 export default defineConfig({
   site: "https://shopes.online",
   output: "server",
-  adapter: vercel(),
+  adapter: vercel({ isr: true }),
   build: { format: "directory" },
   integrations: [sitemap()],
   vite: { plugins: [tailwindcss()] }
