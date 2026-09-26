@@ -8,7 +8,7 @@ export const GET: APIRoute = ({ site }) => {
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
     ...Array.from({ length: pageCount }, (_, index) =>
-      "<sitemap><loc>" + new URL("/sitemap-shopping-" + (index + 1) + ".xml", base).href + "</loc></sitemap>"
+      "<sitemap><loc>" + new URL("/sitemap-blog-" + (index + 1) + ".xml", base).href + "</loc></sitemap>"
     ),
     "</sitemapindex>"
   ].join("");
