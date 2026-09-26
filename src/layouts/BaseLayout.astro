@@ -1,7 +1,7 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
-const { title = "Shopes — live web search", description = "A fast search engine for the live web, local shops, websites, and useful places." } = Astro.props;
+const { title = "Shopes — search shops and apps", description = "A focused search engine for online shops, official stores, and app stores." } = Astro.props;
 ---
 <html lang="en">
   <head>
@@ -15,6 +15,12 @@ const { title = "Shopes — live web search", description = "A fast search engin
     <ClientRouter />
   </head>
   <body>
+    <header class="shopes-header">
+      <a href="/" class="shopes-logo" aria-label="Shopes home">
+        <span class="shopes-logo-mark" aria-hidden="true">S</span>
+        <span>shopes</span>
+      </a>
+    </header>
     <slot />
   </body>
 </html>
