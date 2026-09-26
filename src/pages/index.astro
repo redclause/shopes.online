@@ -7,10 +7,11 @@ const initialQuery = Astro.url.searchParams.get("q") ?? "";
     <div class="hero-orb pulse-glow left-[8%] top-24 size-32 bg-[rgba(110,231,255,.12)] blur-3xl"></div>
     <div class="hero-orb pulse-glow right-[8%] top-44 size-40 bg-[rgba(163,255,111,.10)] blur-3xl"></div>
     <section class="wrap relative flex min-h-[calc(100vh-80px)] flex-col items-center justify-center py-10 text-center">
-      <h1 class="shopes-home-title max-w-5xl text-6xl font-black tracking-[-.065em] text-white sm:text-8xl">
-        Search shops.<br/><span class="bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] bg-clip-text text-transparent">Find more.</span>
-      </h1>
-      <p class="mt-4 max-w-2xl text-base leading-7 text-[var(--muted)] sm:text-lg">A focused shopping search engine. Tavily discovers candidates, then Shopes verifies ecommerce and app-store signals before showing results.</p>
+      <a href="/" class="shopes-logo float mb-5" aria-label="Shopes home">
+        <span class="shopes-logo-mark" aria-hidden="true">S</span>
+        <span>shopes</span>
+      </a>
+      <p class="mt-2 max-w-2xl text-base leading-7 text-[var(--muted)] sm:text-lg">A focused shopping search engine. Tavily discovers candidates, then Shopes verifies ecommerce and app-store signals before showing results.</p>
       <form id="search-form" class="search-shell glass mt-5 flex w-full max-w-3xl overflow-hidden rounded-2xl p-2 text-left">
         <span class="grid size-12 shrink-0 place-items-center text-xl text-white/40">⌕</span>
         <input id="search-input" name="q" value={initialQuery} aria-label="Search shops" class="min-w-0 flex-1 bg-transparent px-2 text-base text-white outline-none placeholder:text-white/30 sm:text-lg" placeholder="What are you looking for?" />
