@@ -86,7 +86,8 @@ async function inspectSchema(url: string, domain: string, candidateText = "") {
 
     const html = (await response.text()).slice(0, 1000000);
     const nodes: Record<string, unknown>[] = [];
-    for (const match of html.matchAll(/<script\\b[^>]*type=["']application\\/ld\\+json["'][^>]*>([\\s\\S]*?)<\\/script>/gi)) {
+    const jsonLdPattern = new RegExp("<script\\\\b[^>]*type=[\\\"']application\\\\/ld\\\\+json[\\\"'][^>]*>([\\\\s\\\\S]*?)<\\\\/script>", "gi");
+    for (const match of html.matchAll(jsonLdPattern)) {
       try { collectSchemaNodes(JSON.parse(match[1].trim()), nodes); } catch {}
     }
     types = [...new Set(nodes.flatMap((node) => schemaTypes(node["@type"]).map((type) => type.split("/").pop() || type)))];
