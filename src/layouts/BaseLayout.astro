@@ -15,27 +15,6 @@ const { title = "Shopes — live web search", description = "A fast search engin
     <ClientRouter />
   </head>
   <body>
-    <header class="sticky top-0 z-40 border-b border-white/10 bg-[#070a12]/75 backdrop-blur-xl">
-      <div class="wrap flex h-18 items-center justify-between gap-6">
-        <a href="/" class="group flex items-center gap-2 text-xl font-black tracking-tight" transition:name="brand">
-          <span class="grid size-8 place-items-center rounded-xl bg-[var(--accent)] text-sm text-[#071006] shadow-[0_0_30px_rgba(163,255,111,.2)] transition group-hover:rotate-6">S</span>
-          shopes<span class="text-[var(--accent)]">.</span>
-        </a>
-        <nav class="hidden items-center gap-1 text-sm font-semibold md:flex">
-          <a href="/search" class="rounded-full px-4 py-2 transition hover:bg-white/5 hover:text-[var(--accent)]">Search</a>
-          <a href="/categories" class="rounded-full px-4 py-2 transition hover:bg-white/5 hover:text-[var(--accent)]">Categories</a>
-          <a href="/shops" class="rounded-full px-4 py-2 transition hover:bg-white/5 hover:text-[var(--accent)]">Local</a>
-          <a href="/directory" class="rounded-full px-4 py-2 transition hover:bg-white/5 hover:text-[var(--accent)]">Directory</a>
-        </nav>
-        <a href="/search" class="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-bold transition hover:-translate-y-0.5 hover:border-[var(--accent)]/40 hover:bg-[var(--accent)] hover:text-[#071006]">Search ↗</a>
-      </div>
-    </header>
     <slot />
-    <footer class="mt-20 border-t border-white/10">
-      <div class="wrap flex flex-col gap-4 py-10 text-sm md:flex-row md:items-center md:justify-between">
-        <span class="muted">Shopes — live web discovery, local places, useful websites.</span>
-        <div class="flex gap-5"><a href="/categories" class="transition hover:text-[var(--accent)]">Categories</a><a href="/shops" class="transition hover:text-[var(--accent)]">Local shops</a></div>
-      </div>
-    </footer>
   </body>
 </html>
