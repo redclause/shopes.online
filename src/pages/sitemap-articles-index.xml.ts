@@ -1,5 +1,7 @@
 ---
 import type { APIRoute } from "astro";
+
+export const prerender = true;
 import { ARTICLE_COUNT, SITEMAP_PAGE_SIZE } from "../data/shopping-articles";
 
 export const GET: APIRoute = ({ site }) => {
