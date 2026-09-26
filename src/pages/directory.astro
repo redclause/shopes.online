@@ -1,0 +1,4 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro"; import {listings} from "../data/directory";
+---
+<BaseLayout title="Web Directory — Shopes"><main class="wrap py-14"><p class="text-xs font-black uppercase tracking-widest text-[var(--muted)]">Hand-indexed web</p><h1 class="mt-3 text-5xl font-black">Web Directory</h1><div class="mt-10 space-y-3">{listings.map(x=><article class="rounded-2xl border border-[var(--line)] bg-white p-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"><div><h2 class="text-lg font-black">{x.name}</h2><p class="mt-1 text-sm text-[var(--muted)]">{x.description}</p></div><a href={x.url} rel="noopener noreferrer" class="rounded-full bg-[var(--ink)] px-5 py-2.5 text-center text-xs font-bold text-white">Visit →</a></article>)}</div></main></BaseLayout>
