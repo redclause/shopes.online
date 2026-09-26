@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { ARTICLE_COUNT, SITEMAP_PAGE_SIZE, getArticle } from "../data/shopping-articles";
+import { ARTICLE_COUNT, SITEMAP_PAGE_SIZE, getArticleMeta } from "../data/shopping-articles";
 
 export const GET: APIRoute = ({ params, site }) => {
   const page = Number(params.page);
@@ -14,7 +14,7 @@ export const GET: APIRoute = ({ params, site }) => {
 
   const urls = [];
   for (let id = start; id <= end; id++) {
-    const article = getArticle(id);
+    const article = getArticleMeta(id);
     if (article) {
       urls.push("<url><loc>" + new URL("/shopping/" + article.slug, base).href + "</loc></url>");
     }
