@@ -7,7 +7,7 @@ const initialQuery = Astro.url.searchParams.get("q") ?? "";
     <div class="hero-orb pulse-glow left-[8%] top-24 size-32 bg-[rgba(110,231,255,.12)] blur-3xl"></div>
     <div class="hero-orb pulse-glow right-[8%] top-44 size-40 bg-[rgba(163,255,111,.10)] blur-3xl"></div>
     <section class="wrap relative flex min-h-[calc(100vh-80px)] flex-col items-center justify-center py-10 text-center">
-      <h1 class="max-w-5xl text-6xl font-black tracking-[-.065em] text-white sm:text-8xl">
+      <h1 class="shopes-home-title max-w-5xl text-6xl font-black tracking-[-.065em] text-white sm:text-8xl">
         Search shops.<br/><span class="bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] bg-clip-text text-transparent">Find more.</span>
       </h1>
       <p class="mt-4 max-w-2xl text-base leading-7 text-[var(--muted)] sm:text-lg">A focused shopping search engine. Tavily discovers candidates, then Shopes verifies ecommerce and app-store signals before showing results.</p>
@@ -74,6 +74,6 @@ const initialQuery = Astro.url.searchParams.get("q") ?? "";
   </script>
   <style>
     @keyframes resultIn { from { opacity:0; transform:translateY(10px) } to { opacity:1; transform:translateY(0) } }
-    @media (prefers-reduced-motion:reduce){article.result-card{animation:none!important;opacity:1}}
+    .shopes-logo-mark{animation:shopesLogoFloat 4s ease-in-out infinite}\n    .shopes-logo{animation:shopesLogoFloat 6s ease-in-out infinite}\n    @media (prefers-reduced-motion:reduce){article.result-card{animation:none!important;opacity:1}.shopes-logo,.shopes-logo-mark{animation:none}}
   </style>
 </BaseLayout>
