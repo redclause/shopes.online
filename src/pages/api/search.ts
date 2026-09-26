@@ -92,6 +92,7 @@ async function inspectSchema(url: string, domain: string) {
     const lower = new Set(types.map((type) => type.toLowerCase()));
     const pageText = html.toLowerCase();
     let score = appStore ? 100 : 0;
+    if (domain === "amazon.com" || domain.endsWith(".amazon.com")) score = Math.max(score, 100);
 
     if (lower.has("onlinestore")) score += 100;
     if (lower.has("onlinebusiness")) score += 55;
@@ -101,6 +102,8 @@ async function inspectSchema(url: string, domain: string) {
     if (lower.has("softwareapplication")) score += 80;
     if (lower.has("mobileapplication")) score += 80;
     if (lower.has("organization")) score += 10;
+    const commerceSignals = [/add to (cart|basket)/i, /buy now/i, /shopping cart/i, /checkout/i, /\\bprice\\b/i, /\\bproducts?\\b/i, /\\bshipping\\b/i];
+    if (commerceSignals.filter((pattern) => pattern.test(html)).length >= 3) score += 45;
 
     // Some major marketplaces do not expose OnlineStore JSON-LD consistently.
     // Strong commerce signals from the page can still qualify an otherwise valid shop.
