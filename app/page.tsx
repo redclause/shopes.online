@@ -1,4 +1,10 @@
-const categories = ["Home & living", "Tech essentials", "Style & accessories", "Kitchen finds", "Outdoor & travel"];
+const categories = [
+  { name: "Home & living", slug: "home-living" },
+  { name: "Tech essentials", slug: "tech" },
+  { name: "Style & accessories", slug: "style" },
+  { name: "Kitchen finds", slug: "home-living" },
+  { name: "Outdoor & travel", slug: "style" }
+];
 
 const picks = [
   { category: "Home & living", title: "Small upgrades for calmer mornings", desc: "Thoughtful everyday pieces that make your routine feel a little easier.", price: "Editor's picks", art: "☕" },
@@ -10,15 +16,12 @@ export default function HomePage() {
   return (
     <main>
       <section className="hero">
-        <div>
-          <p className="eyebrow">A little more considered</p>
-          <h1>Find your next <em>good thing.</em></h1>
-        </div>
+        <div><p className="eyebrow">A little more considered</p><h1>Find your next <em>good thing.</em></h1></div>
         <p className="hero-copy">A clear-eyed guide to useful products, smart buys and discoveries worth your time. Less noise, better choices.</p>
       </section>
       <section aria-labelledby="themes-title">
         <div className="section-heading"><h2 id="themes-title">Browse by theme</h2><span className="eyebrow">Curated categories</span></div>
-        <div className="category-strip">{categories.map((name) => <a className="category-pill" href="/category/home-living" key={name}>{name} ↗</a>)}</div>
+        <div className="category-strip">{categories.map((item) => <a className="category-pill" href={`/category/${item.slug}`} key={item.name}>{item.name} ↗</a>)}</div>
       </section>
       <section aria-labelledby="picks-title">
         <div className="section-heading"><h2 id="picks-title">Worth a closer look</h2><a href="/category/home-living">Explore all guides ↗</a></div>
