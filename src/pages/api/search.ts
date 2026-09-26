@@ -80,7 +80,9 @@ async function tavily(query: string) {
 
   if (!response.ok) {
     const detail = await response.text().catch(() => "");
-    throw new Error(`Tavily ${response.status}${detail ? `: ${detail.slice(0, 160)}` : ""}`);
+    throw new Error(
+      `Tavily ${response.status}${detail ? `: ${detail.slice(0, 160)}` : ""}`,
+    );
   }
 
   const data = (await response.json()) as { results?: unknown[] };
@@ -105,7 +107,7 @@ async function exa(query: string) {
         numResults: 10,
         contents: { highlights: { maxCharacters: 500 } },
       }),
-    ),
+    }),
   );
 
   if (!response.ok) throw new Error(`Exa ${response.status}`);
@@ -130,7 +132,7 @@ async function firecrawl(query: string) {
         limit: 10,
         scrapeOptions: { formats: ["markdown"] },
       }),
-    ),
+    }),
   );
 
   if (!response.ok) throw new Error(`Firecrawl ${response.status}`);
