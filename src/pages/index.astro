@@ -73,6 +73,7 @@ const initialQuery = Astro.url.searchParams.get("q") ?? "";
     if (initialQuery) search(initialQuery);
   </script>
   <style>
+    @keyframes shopesLogoFloat { 0%,100% { transform:translateY(0) rotate(0deg); } 50% { transform:translateY(-5px) rotate(-2deg); } }
     @keyframes resultIn { from { opacity:0; transform:translateY(10px) } to { opacity:1; transform:translateY(0) } }
     .shopes-logo-mark{animation:shopesLogoFloat 4s ease-in-out infinite}\n    .shopes-logo{animation:shopesLogoFloat 6s ease-in-out infinite}\n    @media (prefers-reduced-motion:reduce){article.result-card{animation:none!important;opacity:1}.shopes-logo,.shopes-logo-mark{animation:none}}
   </style>
