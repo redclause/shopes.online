@@ -1,13 +1,13 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { shoppingCategories, ARTICLE_COUNT, getArticle } from "../../data/shopping-articles";
+import { shoppingCategories, ARTICLE_COUNT, getArticleMeta } from "../../data/shopping-articles";
 const slugify=(s:string)=>s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 const categorySlug=Astro.params.category ?? "";
 const category=shoppingCategories.find(c=>slugify(c)===categorySlug);
 if(!category)return Astro.redirect("/articles");
 const categoryIndex=shoppingCategories.indexOf(category);
 const count=Math.floor(ARTICLE_COUNT/shoppingCategories.length);
-const examples=Array.from({length:12},(_,i)=>getArticle(categoryIndex*count+i+1)).filter(Boolean);
+const examples=Array.from({length:12},(_,i)=>getArticleMeta(categoryIndex*count+i+1)).filter(Boolean);
 ---
 <BaseLayout title={category+" Shopping Articles — Shopes"} description={"Shopping guides for "+category+". Browse Shopes articles by category."}>
   <main class="wrap py-10 sm:py-14">
