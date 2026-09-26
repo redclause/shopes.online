@@ -1,4 +1,28 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro"; import {listings} from "../data/directory";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { listings } from "../data/directory";
 ---
-<BaseLayout title="Web Directory — Shopes"><main class="wrap py-14"><p class="text-xs font-black uppercase tracking-widest text-[var(--muted)]">Hand-indexed web</p><h1 class="mt-3 text-5xl font-black">Web Directory</h1><div class="mt-10 space-y-3">{listings.map(x=><article class="rounded-2xl border border-[var(--line)] bg-white p-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"><div><h2 class="text-lg font-black">{x.name}</h2><p class="mt-1 text-sm text-[var(--muted)]">{x.description}</p></div><a href={x.url} rel="noopener noreferrer" class="rounded-full bg-[var(--ink)] px-5 py-2.5 text-center text-xs font-bold text-white">Visit →</a></article>)}</div></main></BaseLayout>
+<BaseLayout title="Web Directory — Shopes">
+  <main class="wrap py-14">
+    <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <p class="eyebrow">Web directory</p>
+        <h1 class="mt-3 text-4xl font-black sm:text-5xl">Discover useful websites.</h1>
+        <p class="mt-3 max-w-2xl text-sm leading-6 text-[var(--muted)]">Browse curated directory entries or submit a website for review.</p>
+      </div>
+      <a href="/submit?source=directory" class="search-button shrink-0 rounded-full px-6 py-3 text-center text-sm font-black">Submit a website</a>
+    </div>
+    <div class="mt-10 space-y-3">
+      {listings.map(x => (
+        <article class="result-card rounded-2xl p-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p class="text-[10px] font-black uppercase tracking-widest text-white/35">{x.category}</p>
+            <h2 class="mt-2 text-lg font-black">{x.name}</h2>
+            <p class="mt-1 text-sm leading-6 text-[var(--muted)]">{x.description}</p>
+          </div>
+          <a href={x.url} target="_blank" rel="noopener noreferrer" class="rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-center text-xs font-bold transition hover:border-[var(--accent)]/40 hover:bg-[var(--accent)] hover:text-[#071006]">Visit →</a>
+        </article>
+      ))}
+    </div>
+  </main>
+</BaseLayout>
