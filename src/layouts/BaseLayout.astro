@@ -3,8 +3,8 @@ import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
 
 const {
-  title = "Shopes Blog",
-  description = "Long-form shopping knowledge, practical guides, and articles."
+  title = "Shopes — Search Online Shops",
+  description = "Search engine for online shops and retailers."
 } = Astro.props;
 ---
 <html lang="en">
@@ -22,13 +22,20 @@ const {
     <ClientRouter />
   </head>
   <body>
-    <header class="wrap flex items-center justify-between py-5">
-      <a href="/blog" class="shopes-logo" aria-label="Shopes Blog home">
+    <header class="wrap site-header">
+      <a href="/" class="shopes-logo" aria-label="Shopes search home">
         <span class="shopes-logo-mark" aria-hidden="true">S</span>
         <span>shopes</span>
       </a>
-      <a href="/blog" class="rounded-xl border border-[var(--accent)]/25 px-4 py-2 text-sm font-bold text-[var(--accent)] transition hover:bg-[var(--accent)]/10">Blog</a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="/">Search</a>
+        <a href="/blog">Blog</a>
+      </nav>
     </header>
     <slot />
   </body>
 </html>
+
+<style>
+  .site-header{display:flex;align-items:center;justify-content:space-between;padding-top:1.25rem;padding-bottom:1.25rem}.site-nav{display:flex;align-items:center;gap:.45rem}.site-nav a{padding:.55rem .8rem;border-radius:.75rem;color:#9aa4bd;font-size:.85rem;font-weight:800}.site-nav a:hover{color:#fff;background:rgba(255,255,255,.04)}
+</style>
