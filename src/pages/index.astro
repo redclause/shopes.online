@@ -8,9 +8,6 @@ const results = searchShops(query, category);
 ---
 <BaseLayout title={query ? `Search shops for "${query}" — Shopes` : "Shopes — Search Online Shops"} description={query ? `Search results for online shops matching ${query}.` : "Search engine for online shops. Find stores, retailers and shopping websites in one place."}>
   <script slot="head" is:inline async src="https://cse.google.com/cse.js?cx=e2dc391aa286b4b8d"></script>
-  <script slot="head" is:inline>
-    window.__gcse = window.__gcse || {};
-  </script>
   <script slot="head" type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "WebSite",
