@@ -27,21 +27,8 @@ const results = searchShops(query, category);
       <div class="shopes-google-search" aria-label="Google shop search">
         <div class="gcse-search"></div>
       </div>
-      <nav class="category-row" aria-label="Shop categories">
-        {["Electronics","Computers","Phones","Home","Furniture","Clothing","Shoes","Sports","Beauty","Toys","Gifts","Handmade","Kitchen","Gaming","Audio","Marketplace"].map((item) => (
-          <a href={"/?category=" + encodeURIComponent(item)} class:list={{ active: category.toLowerCase() === item.toLowerCase() }}>{item}</a>
-        ))}
-      </nav>
-    </section>
+      </section>
 
-    <section class="blog-callout">
-      <div>
-        <p class="eyebrow">Shopes Blog</p>
-        <h2>Shopping knowledge, kept separate from shop search.</h2>
-        <p>Browse the existing long-form blog for product research, store comparisons and online shopping guides.</p>
-      </div>
-      <a href="/blog">Read the blog →</a>
-    </section>
   </main>
 </BaseLayout>
 
