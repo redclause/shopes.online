@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { shopCategories, searchShops } from "../data/shops";
+import { searchShops } from "../data/shops";
 
 const query = Astro.url.searchParams.get("q")?.trim() ?? "";
 const category = Astro.url.searchParams.get("category") ?? "";
@@ -66,5 +66,20 @@ const results = searchShops(query, category);
   .shopes-google-search .gsc-cursor-box{border-color:var(--line)!important}
   .shopes-google-search .gsc-cursor-page{color:#b7c0d1!important}
   .shopes-google-search .gsc-cursor-current-page{color:var(--accent)!important}
+  .shopes-google-search .gsc-result{padding:.9rem 0!important;border-bottom:1px solid var(--line)!important}
+  .shopes-google-search .gsc-result:last-child{border-bottom:0!important}
+  .shopes-google-search .gsc-result-info,.shopes-google-search .gsc-orderby-label,.shopes-google-search .gsc-selected-option-container{color:#7f8aa3!important;font-family:inherit!important}
+  .shopes-google-search .gsc-above-wrapper-area{border-bottom:1px solid var(--line)!important}
+  .shopes-google-search .gs-webResult .gs-title{font-size:1.05rem!important;line-height:1.4!important;font-weight:900!important}
+  .shopes-google-search .gs-webResult .gs-snippet{font-size:.9rem!important}
+  .shopes-google-search .gsc-cursor-box{padding-top:1rem!important;text-align:center!important}
+  .shopes-google-search .gsc-cursor-page{display:inline-block!important;min-width:30px!important;padding:.45rem .55rem!important;margin:0 .15rem!important;border:1px solid var(--line)!important;border-radius:.65rem!important;background:transparent!important}
+  .shopes-google-search .gsc-cursor-current-page{background:rgba(163,255,111,.08)!important;border-color:rgba(163,255,111,.45)!important}
+  .shopes-google-search .gsc-completion-container{border:1px solid var(--line)!important;border-radius:1rem!important;background:#101629!important;box-shadow:0 20px 60px rgba(0,0,0,.35)!important;color:#fff!important;overflow:hidden!important}
+  .shopes-google-search .gsc-completion-selected{background:rgba(163,255,111,.08)!important}
+  .shopes-google-search .gsc-completion-container .gsc-completion-title{color:#fff!important;font-family:inherit!important}
+  .shopes-google-search .gsc-clear-button{filter:invert(1)!important}
+  .shopes-google-search .gsc-search-button-v2:hover{filter:brightness(1.05)!important;box-shadow:0 10px 30px rgba(163,255,111,.2)!important;transform:translateY(-1px)!important}
+  .shopes-google-search .gsc-search-button-v2:focus-visible,.shopes-google-search input.gsc-input:focus-visible{outline:2px solid var(--accent)!important;outline-offset:2px!important}
   .category-row{display:flex;flex-wrap:wrap;justify-content:center;gap:.55rem;margin-top:1.2rem}.category-row a{border:1px solid var(--line);border-radius:999px;padding:.5rem .85rem;color:#9aa4bd;font-size:.82rem;transition:.2s}.category-row a:hover,.category-row a.active{color:#fff;border-color:rgba(163,255,111,.45);background:rgba(163,255,111,.08)}@media (max-width:900px){.shop-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media (max-width:620px){.home-shell{padding-top:3.5rem}.shopes-google-search{margin-top:1.7rem}.shopes-google-search .gsc-search-box{padding:.45rem!important}.shopes-google-search .gsc-search-button-v2{padding:0 .95rem!important}.shop-grid{grid-template-columns:1fr}.section-heading{align-items:start;flex-direction:column}.blog-callout{align-items:flex-start;flex-direction:column}}
 </style>
