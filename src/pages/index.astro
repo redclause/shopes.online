@@ -27,52 +27,11 @@ const results = searchShops(query, category);
       <div class="shopes-google-search" aria-label="Google shop search">
         <div class="gcse-search"></div>
       </div>
-      <div class="category-row" aria-label="Shop categories">
-        {shopCategories.map((item) => {
-          const href = item === "All shops" ? "/" : "/?category=" + encodeURIComponent(item);
-          return <a href={href} class:list={{ active: category.toLowerCase() === item.toLowerCase() || (!category && item === "All shops") }}>{item}</a>;
-        })}
-      </div>
-    </section>
-
-    <section class="results-section" aria-labelledby="results-heading">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">{query || category ? "Search results" : "Featured shops"}</p>
-          <h2 id="results-heading">{query ? `Shops matching “${query}”` : category ? `${category} shops` : "Explore online shops"}</h2>
-        </div>
-        <span class="result-count">{results.length} {results.length === 1 ? "shop" : "shops"}</span>
-      </div>
-
-      {results.length ? (
-        <div class="shop-grid">
-          {results.map((shop) => (
-            <article class="shop-card">
-              <div class="shop-card-top">
-                <span class="shop-mark">{shop.name.charAt(0)}</span>
-                {shop.featured && <span class="featured-badge">Featured</span>}
-              </div>
-              <h3><a href={"/shop/" + shop.slug}>{shop.name}</a></h3>
-              <p class="domain">{shop.domain}</p>
-              <p class="shop-description">{shop.description}</p>
-              <div class="tag-list">
-                {shop.categories.slice(0, 4).map((item) => <a href={"/?category=" + encodeURIComponent(item)}>{item}</a>)}
-              </div>
-              <div class="shop-actions">
-                <a class="details-link" href={"/shop/" + shop.slug}>Shop details →</a>
-                <a class="visit-link" href={shop.url} target="_blank" rel="noopener noreferrer">Visit shop ↗</a>
-              </div>
-            </article>
-          ))}
-        </div>
-      ) : (
-        <div class="empty-state glass">
-          <span class="empty-icon">⌕</span>
-          <h2>No online shops found</h2>
-          <p>Try a shop name, domain, or category such as electronics, furniture, shoes, gifts, or home.</p>
-          <a href="/">Show all shops</a>
-        </div>
-      )}
+      <nav class="category-row" aria-label="Shop categories">
+        {["Electronics","Computers","Phones","Home","Furniture","Clothing","Shoes","Sports","Beauty","Toys","Gifts","Handmade","Kitchen","Gaming","Audio","Marketplace"].map((item) => (
+          <a href={"/?category=" + encodeURIComponent(item)} class:list={{ active: category.toLowerCase() === item.toLowerCase() }}>{item}</a>
+        ))}
+      </nav>
     </section>
 
     <section class="blog-callout">
@@ -107,5 +66,5 @@ const results = searchShops(query, category);
   .shopes-google-search .gsc-cursor-box{border-color:var(--line)!important}
   .shopes-google-search .gsc-cursor-page{color:#b7c0d1!important}
   .shopes-google-search .gsc-cursor-current-page{color:var(--accent)!important}
-  .category-row{display:flex;flex-wrap:wrap;justify-content:center;gap:.55rem;margin-top:1.2rem}.category-row a{border:1px solid var(--line);border-radius:999px;padding:.5rem .85rem;color:#9aa4bd;font-size:.82rem;transition:.2s}.category-row a:hover,.category-row a.active{color:#fff;border-color:rgba(163,255,111,.45);background:rgba(163,255,111,.08)}.results-section{margin-top:6rem}.section-heading{display:flex;align-items:end;justify-content:space-between;gap:1rem;margin-bottom:1.3rem}.section-heading h2{margin:.45rem 0 0;font-size:clamp(1.7rem,4vw,2.7rem);letter-spacing:-.04em;color:#fff;font-weight:900}.result-count{color:#7f8aa3;font-size:.9rem}.shop-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem}.shop-card{padding:1.3rem;border:1px solid var(--line);border-radius:1.25rem;background:linear-gradient(145deg,rgba(16,22,41,.88),rgba(10,14,25,.76));transition:.25s}.shop-card:hover{transform:translateY(-4px);border-color:rgba(163,255,111,.3)}.shop-card-top{display:flex;align-items:center;justify-content:space-between;gap:.5rem}.shop-mark{display:grid;place-items:center;width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#071006;font-weight:950;font-size:1.15rem}.featured-badge{font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);font-weight:900}.shop-card h3{margin:1.15rem 0 .2rem;font-size:1.3rem;font-weight:900;color:#fff}.shop-card h3 a:hover{color:var(--accent)}.domain{margin:0;color:#6f7b95;font-size:.78rem}.shop-description{margin:1rem 0 0;color:var(--muted);font-size:.9rem;line-height:1.65}.tag-list{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1rem}.tag-list a{font-size:.7rem;color:#aeb8cc;border:1px solid var(--line);padding:.3rem .5rem;border-radius:999px}.tag-list a:hover{color:var(--accent)}.shop-actions{display:flex;justify-content:space-between;align-items:center;gap:.5rem;margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--line);font-size:.78rem;font-weight:800}.details-link{color:#dfe6f5}.details-link:hover{color:#fff}.visit-link{color:var(--accent)}.visit-link:hover{filter:brightness(1.1)}.empty-state{text-align:center;padding:4rem 1.5rem;border-radius:1.5rem}.empty-icon{font-size:3rem;color:var(--accent)}.empty-state h2{margin:1rem 0 .5rem;color:#fff;font-size:1.6rem;font-weight:900}.empty-state p{max-width:520px;margin:0 auto 1.5rem;color:var(--muted);line-height:1.7}.empty-state a{color:var(--accent);font-weight:800}.blog-callout{display:flex;align-items:center;justify-content:space-between;gap:2rem;margin-top:5rem;padding:2rem;border:1px solid var(--line);border-radius:1.5rem;background:rgba(15,20,34,.55)}.blog-callout h2{margin:.4rem 0;color:#fff;font-size:1.5rem;font-weight:900}.blog-callout p:not(.eyebrow){margin:0;color:var(--muted);line-height:1.7}.blog-callout>a{white-space:nowrap;color:var(--accent);font-weight:900}@media (max-width:900px){.shop-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media (max-width:620px){.home-shell{padding-top:3.5rem}.shopes-google-search{margin-top:1.7rem}.shopes-google-search .gsc-search-box{padding:.45rem!important}.shopes-google-search .gsc-search-button-v2{padding:0 .95rem!important}.shop-grid{grid-template-columns:1fr}.section-heading{align-items:start;flex-direction:column}.blog-callout{align-items:flex-start;flex-direction:column}}
+  .category-row{display:flex;flex-wrap:wrap;justify-content:center;gap:.55rem;margin-top:1.2rem}.category-row a{border:1px solid var(--line);border-radius:999px;padding:.5rem .85rem;color:#9aa4bd;font-size:.82rem;transition:.2s}.category-row a:hover,.category-row a.active{color:#fff;border-color:rgba(163,255,111,.45);background:rgba(163,255,111,.08)}@media (max-width:900px){.shop-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media (max-width:620px){.home-shell{padding-top:3.5rem}.shopes-google-search{margin-top:1.7rem}.shopes-google-search .gsc-search-box{padding:.45rem!important}.shopes-google-search .gsc-search-button-v2{padding:0 .95rem!important}.shop-grid{grid-template-columns:1fr}.section-heading{align-items:start;flex-direction:column}.blog-callout{align-items:flex-start;flex-direction:column}}
 </style>
